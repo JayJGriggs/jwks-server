@@ -1,18 +1,32 @@
-# JWKS Server (Beginner Version)
+# JWKS Server
 
-This is a small server that:
-- Publishes public RSA keys at `/.well-known/jwks.json` (JWKS format)
-- Issues JWTs at `/auth` (POST)
-- If `?expired` query param is present, issues an expired JWT signed with an expired key
+This project is a simple RESTful JWKS server built in Go. It generates RSA key pairs, assigns each key a unique `kid`, and exposes a JWKS endpoint so public keys can be used to verify JWTs.
 
-## Requirements Covered
-- RSA keypair generation
-- `kid` in JWT header
-- JWKS includes only unexpired keys
-- `/auth` issues normal token
-- `/auth?expired=true` issues expired token using expired key
-- Tests + coverage
+The server has two main endpoints:
 
-## Run the server (port 8080)
-```bash
+- GET /.well-known/jwks.json  
+  Returns the public keys in proper JWKS format. Only non-expired keys are returned.
+
+- POST /auth  
+  Returns a signed JWT.  
+  If `?expired=true` is added to the request, the server signs the JWT with the expired key and sets the expiration time in the past.
+
+## What This Project Covers
+
+- RSA key pair generation  
+- Assigning a unique `kid` to each key  
+- Key expiration handling  
+- JWT signing using RS256  
+- Filtering expired keys from JWKS  
+- Basic REST API handling  
+- Test suite with over 80% coverage  
+
+## How to Run
+
+Make sure you're inside the project folder, then run:
+
 go run .
+
+The server runs on:
+
+http://localhost:8080
